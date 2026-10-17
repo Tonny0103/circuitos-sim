@@ -28,6 +28,16 @@ Não apresentar corrente individual de fio: fios são união ideal e sua corrent
 
 ## Diagnóstico e precedência
 
+O schema valida os dados, mas suas falhas são convertidas em erros de domínio antes do
+retorno. Campo elétrico de resistência/tensão ausente, incompleto, de tipo inválido ou com
+valor inválido (incluindo não finitos e R<=0) produz INVALID_VALUE com identificação do
+componente quando disponível. Tipo de componente desconhecido, ID duplicado ou referência
+quebrada produz INVALID_DOCUMENT; exceder limites produz LIMIT_EXCEEDED.
+Não converter indistintamente toda falha de schema em INVALID_DOCUMENT.
+Se coexistirem problemas estruturais/de limite e de valor, prevalece a etapa 1 abaixo.
+Esse mapeamento é compartilhado pela análise e pela importação de links; o adaptador de link
+pode contextualizar a mensagem, mas preserva o código de domínio como causa do erro.
+
 | Ordem | Code | Condição / orientação visível |
 |---|---|---|
 | 1 | INVALID_DOCUMENT / LIMIT_EXCEEDED | Estrutura, IDs, referências ou limites inválidos; corrigir/importar circuito compatível |

@@ -160,10 +160,14 @@ e seletor de unidade/prefixo; o motor recebe SI. Resultados arredondados só par
    decomposição; preservar transformações para recuperar x nas unidades originais.
    LU com pivoteamento da biblioteca resolve sistemas de posto completo. SVD informa posto
    e condicionamento; não aceitar pseudoinversa como solução física de sistema singular.
-6. No sistema equilibrado, considerar singular value <= 100·eps·dimensão·sigmaMax como zero.
-   Para posto deficiente, avaliar resíduo da solução SVD: incompatível se resíduo normalizado
-   >1e-10, indeterminado caso contrário. Como limiares numéricos são aproximações, casos
-   próximos ao limiar retornam NUMERICAL_FAILURE em vez de afirmar diagnóstico confiável.
+6. No sistema equilibrado, definir τ=100·Number.EPSILON·dimensão·sigmaMax. Valores singulares
+   menores que τ/10 são numericamente nulos; maiores que 10τ são não nulos. Qualquer valor
+   no intervalo fechado [τ/10, 10τ] retorna NUMERICAL_FAILURE, sem afirmar incompatibilidade
+   ou ausência de solução única. Se sigmaMax=0, a matriz é nula e seu posto é zero;
+   tratar esse caso separadamente, sem aplicar uma faixa de largura zero.
+   Para posto deficiente confirmado, avaliar o resíduo normalizado da solução SVD: menor
+   que 1e-11 indica compatibilidade numérica e NON_UNIQUE_SOLUTION; maior que 1e-9 indica
+   INCONSISTENT_CONSTRAINTS. No intervalo fechado [1e-11, 1e-9], retornar NUMERICAL_FAILURE.
 7. Mesmo com posto completo, rejeitar condição estimada >1e12, números não finitos ou resíduo
    normalizado >1e-10. Checar KCL e balanço de potência com tolerâncias das fixtures. Não
    adicionar resistências fictícias, gmin nem regularização para forçar solução única.
@@ -210,8 +214,10 @@ Verificar KCL por nó e soma de potências zero, com tolerância acumulada por n
 Incluir resistor em curto, múltiplos terras, circuitos sem fonte com solução zero e permutação
 de IDs/ordem. Negativos: vazio, sem terra, terminal aberto, flutuante, fontes paralelas iguais
 e diferentes, laços redundantes e incompatíveis, valor inválido, curto de fonte e falha numérica.
-Os limiares do solver precisam de fixtures nos dois lados do limite e erro numérico explícito
-na zona de incerteza; testar solver separadamente com matrizes de posto conhecido.
+Os limiares são uma política numérica, não uma prova de posto exato. Validar fixtures abaixo,
+acima e exatamente nas fronteiras τ/10, 10τ, 1e-11 e 1e-9; testar solver separadamente com
+matrizes de posto conhecido, incluindo matriz nula. Manter os gates finais de condição e
+resíduo para soluções únicas, independentemente da política de diagnóstico singular.
 
 ### Fluxos e gates
 
