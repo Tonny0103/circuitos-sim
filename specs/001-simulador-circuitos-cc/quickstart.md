@@ -1,8 +1,8 @@
 # Quickstart e validação da entrega
 
-Este é o roteiro executável previsto para a implementação. O repositório ainda contém apenas
-artefatos de especificação; comandos npm abaixo passam a funcionar após criar o aplicativo.
-Não interpretar este guia como evidência de testes ou publicação já realizados.
+Este roteiro valida a aplicação implementada. Os comandos locais estão disponíveis;
+publicação e avaliação com estudantes permanecem sujeitas às pendências registradas em
+`docs/validation/release.md`. A existência deste guia não comprova publicação.
 
 ## Pré-requisitos
 
@@ -81,8 +81,7 @@ interpretação das mensagens. Esse teste humano é gate de aceite; E2E não o s
 
 ## Deploy concreto
 
-1. Publicar o código no repositório público com LICENSE, README e CONTRIBUTING. Remover o
-   relatório temporário de emenda da constituição antes de seu commit, conforme a própria skill.
+1. Publicar o código no repositório público com LICENSE, README e CONTRIBUTING.
 2. Configurar CI e executar todos os scripts acima, incluindo build e E2E do artefato out/.
 3. Na Vercel, importar o repositório; preset Next.js, Node 24, install npm ci, build npm run
    build e export out/. Definir branch principal como produção; nenhuma API dinâmica.

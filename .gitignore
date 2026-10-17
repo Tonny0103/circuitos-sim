@@ -17,3 +17,10 @@ test-results/
 # Arquivos do sistema
 .DS_Store
 Thumbs.db
+dist/
+build/
+*.tmp
+*.swp
+.vscode/
+.idea/
+.vercel/
